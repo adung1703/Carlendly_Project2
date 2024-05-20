@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import {Link, useLocation } from 'react-router-dom';
 
 function homepage() {
   const location = useLocation();
@@ -9,7 +9,9 @@ function homepage() {
     // Extract username from token stored in localStorage
     const token = localStorage.getItem('token');
     if (token) {
+      console.log(token);
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      console.log(decodedToken);
       setUsername(decodedToken.username);
     }
   }, [location]);
@@ -23,7 +25,7 @@ function homepage() {
       </div>
       <div class="create_n_join"> 
        <div class="create">
-        <button class="button"><a href="create.html">Create</a></button>
+        <button class="button"> <Link to="/create">Create</Link></button>
        </div>
        <div class="join">
         <button class="button"><a href="">Join</a></button>
@@ -46,9 +48,18 @@ function homepage() {
             {username}
           </div>
         </div>
-        <div class="notice">
-          <img src="../public/images/bell.webp" alt="" width="44px" height="44px"></img>
+
+        <div id="notification-bell-container">
+          <div id="notification-bell">
+              <span class="bell-icon">
+                <img src="../public/images/bell.webp" alt="" width="44px" height="44px"></img>
+              </span>
+              <span id="notification-count" class="count">0</span>
+          </div>
+        <div id="notification-list" class="hidden">
+            
         </div>
+    </div>
       </div>
     </div>
     <div class="container">

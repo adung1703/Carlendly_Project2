@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Login() {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -13,11 +13,9 @@ function Login() {
     try {
       const response = await axios.post('http://localhost:3000/login', { username, password });
       const { data } = response;
-
       if (data.token) {
         localStorage.setItem("token", data.token);
-        // Điều hướng đến trang chính
-        history("/");
+        navigate("/");
       } else {
         openErrorModal("Wrong credentials");
       }
