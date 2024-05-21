@@ -591,7 +591,6 @@ label.valid {
     margin-right: 0px;
     margin-bottom: 10px; } }
 
-/*# sourceMappingURL=style.css.map */
 
 .forgot-pass {
   float: right;
@@ -1218,3 +1217,30 @@ section .upload_details span{
   height: 70px;
   width: 200px;
 }
+
+#notification-list {
+  position: absolute;
+  top: 88px; /* Adjust this value to align with the bottom of the bell icon */
+  right: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it appears above other elements */
+  width: 300px; /* Adjust as needed */
+  max-height: 400px; /* Adjust as needed */
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background-color: #f9f9f9;
+}
+
