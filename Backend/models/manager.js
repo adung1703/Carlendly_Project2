@@ -1,7 +1,7 @@
 // models/manager.js
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const managerSchema = new mongoose.Schema({
     managerUser: {
         type: String,
         required: true,
@@ -12,6 +12,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const Manager = mongoose.model('manager', userSchema);
+const Manager = mongoose.model('manager', managerSchema);
 
 module.exports = Manager;

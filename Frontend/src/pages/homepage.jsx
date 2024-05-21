@@ -1,4 +1,3 @@
-// pages/homepage.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,12 +6,9 @@ function Homepage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState('');
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: "You have a new meeting request." },
-    { id: 2, message: "Your event has been rescheduled." },
-    { id: 3, message: "New comment on your event." },
-  ]);
+  const [notifications, setNotifications] = useState([]);
   const [isNotificationListVisible, setIsNotificationListVisible] = useState(false);
+
   const toggleNotificationList = () => {
     setIsNotificationListVisible(!isNotificationListVisible);
   };
@@ -23,7 +19,6 @@ function Homepage() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log(token);
     if (!token) {
       navigate('/login');
     } else {
@@ -44,6 +39,18 @@ function Homepage() {
       .catch(error => {
         console.error('Error fetching user info:', error);
         navigate('/login');
+      });
+
+      axios.get('http://localhost:3000/api/notifications', {
+        headers: {
+          "Auth-Token": token,
+        }
+      })
+      .then(response => {
+        setNotifications(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching notifications:', error);
       });
     }
   }, [location, navigate]);
@@ -78,29 +85,29 @@ function Homepage() {
             <div className="acc_name">
               {displayName}
             </div>
-            </div>
+          </div>
         </div>
         <div id="notification-bell-container">
-              <div id="notification-bell" onClick={toggleNotificationList} style={{ cursor: 'pointer' }}>
-                <span className="bell-icon">
-                  <img src="../public/images/bell.webp" alt="" width="44px" height="44px" />
-                </span>
-                <span id="notification-count" className="count">{notifications.length}</span>
-              </div>
-              {isNotificationListVisible && (
-                <div id="notification-list">
-                  {notifications.map(notification => (
-                    <div
-                      key={notification.id}
-                      className="notification-item"
-                      onClick={() => handleNotificationClick(notification.id)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      {notification.message}
-                    </div>
-                  ))}
+          <div id="notification-bell" onClick={toggleNotificationList} style={{ cursor: 'pointer' }}>
+            <span className="bell-icon">
+              <img src="../public/images/bell.webp" alt="" width="44px" height="44px" />
+            </span>
+            <span id="notification-count" className="count">{notifications.length}</span>
+          </div>
+          {isNotificationListVisible && (
+            <div id="notification-list">
+              {notifications.map(notification => (
+                <div
+                  key={notification.id}
+                  className="notification-item"
+                  onClick={() => handleNotificationClick(notification.id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {notification.message}
                 </div>
-              )}
+              ))}
+            </div>
+          )}
         </div>
       </div>
       

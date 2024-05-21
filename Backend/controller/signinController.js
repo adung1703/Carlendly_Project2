@@ -24,6 +24,7 @@ exports.loginUser = async (req, res) => {
                     username: user.username, 
                     fullname: user.fullname, 
                     email: user.email,
+                    studentId: user.studentId,
                     phone: user.phone
         }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN

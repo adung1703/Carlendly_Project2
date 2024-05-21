@@ -31,8 +31,6 @@ async function addOrUpdateManager(managerUser, newStudents) {
 
 exports.manageStudents = async (req, res) => {
     const { managerUser, students } = req.body;
-    console.log(managerUser);
-    console.log(students);
 
     if (!managerUser || !Array.isArray(students)) {
         return res.status(400).send('Invalid request data');
@@ -46,7 +44,4 @@ exports.manageStudents = async (req, res) => {
     }
 };
 
-
-// Gọi hàm để thêm hoặc cập nhật managerUser và students
-//addOrUpdateManager("adung1703", ["20215465", "20214854", "20215475", "20217484"]);
 

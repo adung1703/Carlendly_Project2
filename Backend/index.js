@@ -5,8 +5,10 @@ const path = require('path');
 
 const registerRoute = require('./routes/register.js');
 const siginRoute = require('./routes/signin.js');
-const managerRoute = require('./routes/manage.js')
-const getUserInfo = require('./routes/getUser.js')
+const managerRoute = require('./routes/manage.js');
+const createSlotsRoute = require('./routes/createSlots.js');
+const notificationsRoute = require('./routes/notification.js');
+const getUserInfo = require('./routes/getUser.js');
 
 const cors = require('cors');
 const DB_URI = 'mongodb+srv://adung1703:Adung_2003@project2.8aaaent.mongodb.net/?retryWrites=true&w=majority&appName=Project2';
@@ -37,7 +39,10 @@ app.use(bodyParser.json());
 app.use('/register', registerRoute);
 app.use('/login', siginRoute);
 app.use('/import', managerRoute);
+app.use('/create', createSlotsRoute);
 app.use('/api/users', getUserInfo);
+app.use('/api/notifications', notificationsRoute);
+
 
 // Khởi động server
 app.listen(port, () => {
