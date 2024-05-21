@@ -9,6 +9,7 @@ exports.loginUser = async (req, res) => {
 
         const user = await User.findOne({ username });
 
+        // console.log(user);
         if (!user) {
             return res.status(400).json({ success: false, message: 'Tài khoản không tồn tại' });
         }
@@ -18,7 +19,13 @@ exports.loginUser = async (req, res) => {
         }
 
         // Tạo token JWT
-        const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ 
+                    id: user._id, 
+                    username: user.username, 
+                    fullname: user.fullname, 
+                    email: user.email,
+                    phone: user.phone
+        }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN
         });
 
@@ -27,5 +34,21 @@ exports.loginUser = async (req, res) => {
     } catch (error) {
         console.error('Lỗi khi đăng nhập:', error);
         res.status(500).json({ success: false, message: 'Đã xảy ra lỗi khi đăng nhập' });
+    }
+};
+
+exports.getUserInfo = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).select('-password'); // Loại bỏ mật khẩu
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'Người dùng không tồn tại' });
+        }
+
+        res.status(200).json({ success: true, user });
+    } catch (error) {
+        console.error('Lỗi khi lấy thông tin người dùng:', error);
+        res.status(500).json({ success: false, message: 'Đã xảy ra lỗi khi lấy thông tin người dùng' });
     }
 };
