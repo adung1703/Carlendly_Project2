@@ -44,4 +44,14 @@ exports.manageStudents = async (req, res) => {
     }
 };
 
+exports.getStudents = async (req, res) => {
+    try {
+        const { username } = req.body;
+        const manager = await Manager.find({managerUser: username});
+        res.json(manager.students);
+    } catch (error) {
+        res.status(500).send('Server Error');
+    }
+};
+
 

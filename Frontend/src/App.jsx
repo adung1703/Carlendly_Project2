@@ -6,7 +6,8 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Homepage from "./pages/homepage";
 import Login from "./pages/login";
 import Register from "./pages/register";
-import Create from "./pages/create"
+import Create from "./pages/create";
+import Join from './pages/join';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/join/:id" element={<Join />} />
         </Routes>
       </BrowserRouter>
   );

@@ -3,11 +3,13 @@ const mySlots = require('../models/availabilitySlots');
 
 exports.listSlots = async (req, res) => {
     try {
-        const { hostUser, participant, slots } = req.body;
+        const { hostUser, description, participant, slots, location } = req.body;
         const newUserSlots = new mySlots({
             hostUser,
+            description,
             participant,
-            slots
+            slots,
+            location
         });
         await newUserSlots.save();
         res.status(201).json({ message: 'User slots saved successfully!' });
@@ -19,14 +21,14 @@ exports.listSlots = async (req, res) => {
 
 exports.getNotification = async (req, res) => {
     try {
-//        console.log(req.user.studentId);
-        const userSlots = await mySlots.find({ "participant": '20215545' }).sort({ currentTime: -1 }).exec();
+        const userSlots = await mySlots.find({ "participant": req.user.studentId }).sort({ currentTime: -1 }).exec();
         console.log(userSlots);
         const notifications = userSlots.map(slot => ({
             id: slot._id,
             hostUser: slot.hostUser,
+            description: slot.description,
             currentTime: slot.currentTime,
-            message: `Bạn có cuộc họp từ ${slot.hostUser}`
+            message: slot.hostUser
         }));
         res.json(notifications);
     } catch (error) {
@@ -34,3 +36,14 @@ exports.getNotification = async (req, res) => {
     }
 };
 
+exports.getAvailabilitySlots = async (req, res) => {
+    try {
+        const slotsID = req.query.id;
+        console.log(slotsID);
+        const AvailSlots = await mySlots.findOne({ "_id": slotsID }).exec();
+        console.log(AvailSlots);
+        res.json(AvailSlots);
+    } catch (error) {
+        res.status(500).send('Server Error');
+    }
+};

@@ -18,6 +18,9 @@ const userSlotsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String
+    },
     participant: {
         type: Array,
         default: []
@@ -29,6 +32,9 @@ const userSlotsSchema = new mongoose.Schema({
     slots: {
         type: [slotSchema],
         default: []
+    }, 
+    location: {
+        type: String
     }
 });
 
