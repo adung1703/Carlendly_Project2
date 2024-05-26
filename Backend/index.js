@@ -10,9 +10,10 @@ const createSlotsRoute = require('./routes/createSlots.js');
 const notificationsRoute = require('./routes/notification.js');
 const joinMeetingRoute = require('./routes/joinMeeting.js');
 const getUserInfoRoute = require('./routes/getUser.js');
-const getMeetingsRoute = require('./routes/getMeetings.js')
+const getMeetingsRoute = require('./routes/getMeetings.js');
 const getStudentsRoute = require('./routes/getStudents.js');
-const getAvailabilitySlotsRoute = require('./routes/getSlots.js')
+const getAvailabilitySlotsRoute = require('./routes/getSlots.js');
+const editNoteRoute = require('./routes/editNote.js');
 
 const cors = require('cors');
 const DB_URI = 'mongodb+srv://adung1703:Adung_2003@project2.8aaaent.mongodb.net/?retryWrites=true&w=majority&appName=Project2';
@@ -50,6 +51,7 @@ app.use('/api/notifications', notificationsRoute);
 app.use('/api/mymeetings', getMeetingsRoute);
 app.use('/api/mystudents', getStudentsRoute);
 app.use('/api/myslots', getAvailabilitySlotsRoute);
+app.use('/editNote', editNoteRoute);
 
 // Khởi động server
 app.listen(port, () => {

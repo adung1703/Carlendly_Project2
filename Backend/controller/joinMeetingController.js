@@ -92,3 +92,22 @@ exports.myMeeting = async (req, res) => {
         res.status(500).send('Server Error');
     }
 }
+
+exports.editNote = async (req, res) => {
+    try {
+        const meetingId = req.header('meetingId');
+        const studentId = req.user.studentId;
+        const Meeting = await meeting.findOne({_id : meetingId}).exec();
+        console.log(Meeting);
+        if (Meeting.studentId != studentId) {
+            res.status(400).send('Không thể chỉnh sửa do xác thực!');
+        } else {
+            Meeting.note = req.body.note;
+            Meeting.save();
+            res.status(200).send('Chỉnh sửa thành công!');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+}

@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from './navbar';
 import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root'); // Cài đặt element gốc cho react-modal
 
 function Create() {
   const [date, setDate] = useState(new Date());
@@ -9,10 +12,14 @@ function Create() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedParticipants, setSelectedParticipants] = useState([]);
   const [amPm, setAmPm] = useState('AM');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [slots, setSlots] = useState([]);
+  const [startTime, setStartTime] = useState({ hour: '', minute: '' });
+  const [duration, setDuration] = useState({ hour: '', minute: '' });
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const participants = ['John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown']; // Danh sách người tham gia
-  
+
   const renderCalendar = () => {
     const firstDateofMonth = new Date(currYear, currMonth, 1).getDay();
     const lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate();
@@ -62,17 +69,47 @@ function Create() {
 
   const handleParticipantSelect = (participant) => {
     if (selectedParticipants.includes(participant)) {
-      // Nếu người được chọn đã tồn tại trong danh sách, loại bỏ nó
       setSelectedParticipants(selectedParticipants.filter(p => p !== participant));
     } else {
-      // Ngược lại, thêm người được chọn vào danh sách
       setSelectedParticipants([...selectedParticipants, participant]);
     }
   };
 
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleAddSlot = () => {
+    if (selectedDay && startTime.hour !== '' && startTime.minute !== '' && duration.hour !== '' && duration.minute !== '') {
+      const slot = {
+        date: new Date(currYear, currMonth, selectedDay),
+        time: `${startTime.hour}:${startTime.minute} ${amPm}`,
+        duration: `${duration.hour}h ${duration.minute}m`
+      };
+      setSlots([...slots, slot]);
+      closeModal();
+    }
+  };
+
+  const formatInput1 = (input) => {
+    let value = parseInt(input.value);
+    if (value < 0 || isNaN(value)) input.value = 0;
+    if (value > 23) input.value = 23;
+  };
+
+  const formatInput2 = (input) => {
+    let value = parseInt(input.value);
+    if (value < 0 || isNaN(value)) input.value = 0;
+    if (value > 59) input.value = 59;
+  };
+
   return (
     <div className="create_page">
-      <Navbar></Navbar>
+      <Navbar />
       <div className="title">
         <h1>Create new event schedule</h1>
         <span><Link to="/">x</Link></span>
@@ -108,44 +145,74 @@ function Create() {
                 </ul>
               </div>
             </div>
-            <p className="schedule_inf">Please choose event starting time :</p>
-            <div className="start_time">
-              <span><img src="img/clock.webp" alt="Clock" width="50px" height="50px" /></span>
-              <input type="number" onInput={(e) => formatInput1(e.target)} />
-              <span className="space">:</span>
-              <input type="number" onInput={(e) => formatInput2(e.target)} />
-              <div className="select_menu">
-                <div className="select_btn" onClick={() => setAmPm(amPm === 'AM' ? 'PM' : 'AM')}>
-                  <span className="sbtn_text">{amPm}</span>
-                  <img src="img/arrow.png" alt="Arrow" />
+            <button className="button" onClick={openModal}>Add</button>
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              contentLabel="Select Date and Time"
+            >
+              <h2>Select Date and Time</h2>
+              <div className="start_time">
+                <span>Time: </span>
+                <input 
+                  type="number" 
+                  value={startTime.hour} 
+                  onInput={(e) => { formatInput1(e.target); setStartTime({ ...startTime, hour: e.target.value }); }} 
+                />
+                <span className="space">:</span>
+                <input 
+                  type="number" 
+                  value={startTime.minute} 
+                  onInput={(e) => { formatInput2(e.target); setStartTime({ ...startTime, minute: e.target.value }); }} 
+                />
+                <div className="select_menu">
+                  <div className="select_btn" onClick={() => setAmPm(amPm === 'AM' ? 'PM' : 'AM')}>
+                    <span className="sbtn_text">{amPm}</span>
+                    <img src="img/arrow.png" alt="Arrow" />
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            <p className="schedule_inf">Please choose event duration :</p>
-            <div className="duration">
-              <span><img src="img/time.jpg" alt="Time" width="50px" height="50px" /></span>
-              <input type="number" onInput={(e) => formatInput1(e.target)} />
-              <span className="duration_element">Hour</span>
-              <input type="number" onInput={(e) => formatInput2(e.target)} />
-              <span className="duration_element">Minute</span>
+              <p className="schedule_inf">Event Duration:</p>
+              <div className="duration">
+                <span>Duration: </span>
+                <input 
+                  type="number" 
+                  value={duration.hour} 
+                  onInput={(e) => { formatInput1(e.target); setDuration({ ...duration, hour: e.target.value }); }} 
+                />
+                <span className="duration_element">Hour</span>
+                <input 
+                  type="number" 
+                  value={duration.minute} 
+                  onInput={(e) => { formatInput2(e.target); setDuration({ ...duration, minute: e.target.value }); }} 
+                />
+                <span className="duration_element">Minute</span>
+              </div>
+              <button className="button" onClick={handleAddSlot}>OK</button>
+              <button className="button" onClick={closeModal}>Cancel</button>
+            </Modal>
+            <div className="slots">
+              {slots.map((slot, index) => (
+                <div key={index} className="slot">
+                  <p>Date: {slot.date.toDateString()}</p>
+                  <p>Time: {slot.time}</p>
+                  <p>Duration: {slot.duration}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
         <div className="content_right">
           <div className="wrapper">
-
             <p className="schedule_inf">Please enter event location :</p>
             <div className="location">
               <span><img src="img/location.png" alt="Location" width="50px" height="50px" /></span>
               <input type="text" />
             </div>
-
             <p className="schedule_inf">Enter event short description :</p>
             <div className="description">
-              <textarea name="" id="" cols="30" rows="10"></textarea>
+              <textarea cols="30" rows="10"></textarea>
             </div>
-
             <div className="participants_section">
               <p className="schedule_inf">Add event participant</p>
               <div className="selected_participants">
@@ -165,7 +232,6 @@ function Create() {
                 ))}
               </div>
             </div>
-
             <div className="submit">
               <button className="button">Create schedule</button>
             </div>
@@ -174,20 +240,6 @@ function Create() {
       </div>
     </div>
   );
-}
-
-function formatInput1(input) {
-  // Ensure that the input is always in the range 0-23
-  let value = parseInt(input.value);
-  if (value < 0 || isNaN(value)) input.value = 0;
-  if (value > 23) input.value = 23;
-}
-
-function formatInput2(input) {
-  // Ensure that the input is always in the range 0-59
-  let value = parseInt(input.value);
-  if (value < 0 || isNaN(value)) input.value = 0;
-  if (value > 59) input.value = 59;
 }
 
 export default Create;
