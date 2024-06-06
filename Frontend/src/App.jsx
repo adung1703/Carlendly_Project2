@@ -8,6 +8,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Create from "./pages/create";
 import Join from './pages/join';
+import MyMeeting from './pages/mymeeting';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/join/:id" element={<Join />} />
+          <Route path="/mymeeting" element={<MyMeeting />} />
         </Routes>
       </BrowserRouter>
   );

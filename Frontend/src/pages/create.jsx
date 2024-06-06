@@ -1,24 +1,52 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import Navbar from './navbar';
-import { Link } from 'react-router-dom';
-import Modal from 'react-modal';
-
-Modal.setAppElement('#root'); // Cài đặt element gốc cho react-modal
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Create() {
+  const navigate = useNavigate();
+
   const [date, setDate] = useState(new Date());
   const [currYear, setCurrYear] = useState(date.getFullYear());
   const [currMonth, setCurrMonth] = useState(date.getMonth());
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedParticipants, setSelectedParticipants] = useState([]);
-  const [amPm, setAmPm] = useState('AM');
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [slots, setSlots] = useState([]);
   const [startTime, setStartTime] = useState({ hour: '', minute: '' });
   const [duration, setDuration] = useState({ hour: '', minute: '' });
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
+  var username;
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const participants = ['John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown']; // Danh sách người tham gia
+
+  const [participants, setParticipants] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    } else {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/api/mystudents', {
+            headers: {
+              'Auth-Token': token 
+            }
+          });
+          const data = response.data;
+          if (Array.isArray(data) && data.length > 0) {
+            const students = data[0].students; 
+            setParticipants(students); 
+          }
+        } catch (error) {
+          console.error('Error fetching participants:', error);
+        }
+      };
+    
+      fetchData();
+    }
+  }, [navigate]);
 
   const renderCalendar = () => {
     const firstDateofMonth = new Date(currYear, currMonth, 1).getDay();
@@ -32,24 +60,32 @@ function Create() {
     }
 
     for (let i = 1; i <= lastDateofMonth; i++) {
-      const isToday = i === date.getDate() && currMonth === new Date().getMonth() && currYear === new Date().getFullYear() ? "today" : "";
-      const isFuture = date.getDate() < i && currMonth === new Date().getMonth() && currYear === new Date().getFullYear() ? "selectable" : "";
+      let isToday = i === date.getDate() && currMonth === new Date().getMonth()
+                    && currYear === new Date().getFullYear() ? "today" : "";
+      let isFuture = date.getDate() < i && currMonth === new Date().getMonth()
+                    && currYear === new Date().getFullYear() ? "selectable" : "";
       liTag.push(
-        <li 
-          className={`${isToday} ${isFuture}`} 
-          key={`current-${i}`} 
-          onClick={() => isFuture && setSelectedDay(i)}
-        >
-          {i}
-        </li>
+          <li className={`${isToday} ${isFuture}`} onClick={() => selectDate(i)}>{i}</li>
       );
-    }
+  }  
 
     for (let i = lastDayofMonth; i < 6; i++) {
       liTag.push(<li className="inactive" key={`next-${i}`}>{i - lastDayofMonth + 1}</li>);
     }
     return liTag;
   };
+
+  function selectDate(day) {
+    const element = document.querySelector(`.days li:nth-child(${day+6})`);
+    if (element && element.classList.contains("selectable")) {
+        const allDays = document.querySelectorAll(".days li");
+        allDays.forEach(day => {
+          day.classList.remove("active");
+        });
+        element.classList.add("active");
+        setSelectedDay(day);
+    }
+}
 
   const handlePrevNext = (direction) => {
     if (direction === 'prev') {
@@ -74,37 +110,74 @@ function Create() {
       setSelectedParticipants([...selectedParticipants, participant]);
     }
   };
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
   const handleAddSlot = () => {
-    if (selectedDay && startTime.hour !== '' && startTime.minute !== '' && duration.hour !== '' && duration.minute !== '') {
-      const slot = {
-        date: new Date(currYear, currMonth, selectedDay),
-        time: `${startTime.hour}:${startTime.minute} ${amPm}`,
-        duration: `${duration.hour}h ${duration.minute}m`
-      };
-      setSlots([...slots, slot]);
-      closeModal();
+
+    const slot = {
+      date: new Date(currYear, currMonth, selectedDay),
+      time: `${startTime.hour}:${startTime.minute}`,
+      duration: `${duration.hour}h${duration.minute}m`
+    };
+    setSlots([...slots, slot]);
+  };  
+
+  const handleStartChange = (event) => {
+    const { name, value } = event.target;
+    setStartTime({
+      ...startTime,
+      [name]: value
+    });
+  };
+
+  const handleDurationChange = (event) => {
+    const { name, value } = event.target;
+    setDuration({
+      ...duration,
+      [name]: value
+    });
+  };
+
+  const handleCreateSchedule = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const userResponse = await axios.get('http://localhost:3000/api/users/me', {
+        headers: {
+          "Auth-Token": token,
+        }
+      });
+
+      if (userResponse.data && userResponse.data.user) {
+        username = userResponse.data.user.username;
+      } else {
+        console.error('Invalid response structure:', userResponse.data);
+        navigate('/login');
+        return;
+      }
+
+      const formattedSlots = slots.map(slot => ({
+        dateTime: new Date(slot.date.setHours(slot.time.split(':')[0], slot.time.split(':')[1])),
+        duration: parseInt(slot.duration.split('h')[0]) * 60 + parseInt(slot.duration.split('h')[1].split('m')[0])
+      }));
+      const response = await axios.post('http://localhost:3000/create', {
+        hostUser: username,
+        description: description,
+        participant: selectedParticipants,
+        slots: formattedSlots,
+        location: location
+      });
+
+      alert(response.data.message)
+    } catch (error) {
+      console.error('Error creating schedule:', error);
+      // Handle the error here, for example: show an error message to the user
     }
   };
 
-  const formatInput1 = (input) => {
-    let value = parseInt(input.value);
-    if (value < 0 || isNaN(value)) input.value = 0;
-    if (value > 23) input.value = 23;
+  const handleLocationChange = (event) => {
+    setLocation(event.target.value);
   };
-
-  const formatInput2 = (input) => {
-    let value = parseInt(input.value);
-    if (value < 0 || isNaN(value)) input.value = 0;
-    if (value > 59) input.value = 59;
+  
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
   };
 
   return (
@@ -123,10 +196,10 @@ function Create() {
                 <p className="month_year">{`${months[currMonth]} ${currYear}`}</p>
                 <div className="icons">
                   <span id="prev" className="prev" onClick={() => handlePrevNext('prev')}>
-                    <img src="img/arrow.png" alt="Previous" width="35px" height="35px" />
+                    <img src="../../public/images/arrow.png" alt="Previous" width="35px" height="35px" />
                   </span>
                   <span id="next" className="next" onClick={() => handlePrevNext('next')}>
-                    <img src="img/arrow.png" alt="Next" width="35px" height="35px" />
+                    <img src="../../public/images/arrow.png" alt="Next" width="35px" height="35px" />
                   </span>
                 </div>
               </div>
@@ -145,53 +218,36 @@ function Create() {
                 </ul>
               </div>
             </div>
-            <button className="button" onClick={openModal}>Add</button>
-            <Modal
-              isOpen={modalIsOpen}
-              onRequestClose={closeModal}
-              contentLabel="Select Date and Time"
-            >
-              <h2>Select Date and Time</h2>
-              <div className="start_time">
-                <span>Time: </span>
-                <input 
-                  type="number" 
-                  value={startTime.hour} 
-                  onInput={(e) => { formatInput1(e.target); setStartTime({ ...startTime, hour: e.target.value }); }} 
-                />
-                <span className="space">:</span>
-                <input 
-                  type="number" 
-                  value={startTime.minute} 
-                  onInput={(e) => { formatInput2(e.target); setStartTime({ ...startTime, minute: e.target.value }); }} 
-                />
-                <div className="select_menu">
-                  <div className="select_btn" onClick={() => setAmPm(amPm === 'AM' ? 'PM' : 'AM')}>
-                    <span className="sbtn_text">{amPm}</span>
-                    <img src="img/arrow.png" alt="Arrow" />
-                  </div>
-                </div>
-              </div>
-              <p className="schedule_inf">Event Duration:</p>
-              <div className="duration">
-                <span>Duration: </span>
-                <input 
-                  type="number" 
-                  value={duration.hour} 
-                  onInput={(e) => { formatInput1(e.target); setDuration({ ...duration, hour: e.target.value }); }} 
-                />
-                <span className="duration_element">Hour</span>
-                <input 
-                  type="number" 
-                  value={duration.minute} 
-                  onInput={(e) => { formatInput2(e.target); setDuration({ ...duration, minute: e.target.value }); }} 
-                />
-                <span className="duration_element">Minute</span>
-              </div>
-              <button className="button" onClick={handleAddSlot}>OK</button>
-              <button className="button" onClick={closeModal}>Cancel</button>
-            </Modal>
-            <div className="slots">
+            <button className="button" onClick={handleAddSlot}>Add</button>
+            <p class="schedule_inf">Please choose event starting time :</p>
+            <div class="start_time">
+              <span><img src="../../public/images/clock.webp" alt="" width="50px" height="50px"></img></span>
+              <input type="number" 
+                name="hour"
+                value={startTime.hour}
+                onChange={handleStartChange}></input>
+              <span class="space">:</span>
+              <input type="number" 
+                name="minute"
+                value={startTime.minute}
+                onChange={handleStartChange}></input>
+    
+            </div>
+            <p class="schedule_inf">Please choose event duration :</p>
+            <div class="duration">
+              <span><img src="../../public/images/time.jpg" alt="" width="50px" height="50px"></img></span>
+              <input type="number" 
+                name="hour"
+                value={duration.hour}
+                onChange={handleDurationChange}></input>
+              <span class="duration_element">Hour</span>
+              <input type="number" 
+                name="minute"
+                value={duration.minute}
+                onChange={handleDurationChange}></input>
+              <span class="duration_element">Minute</span>
+            </div>
+            {/* <div className="slots">
               {slots.map((slot, index) => (
                 <div key={index} className="slot">
                   <p>Date: {slot.date.toDateString()}</p>
@@ -199,19 +255,46 @@ function Create() {
                   <p>Duration: {slot.duration}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="content_right">
           <div className="wrapper">
+            <div class="slot-list">
+              <h1>Scheduled slot :</h1>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Duration</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {slots.map((slot, index) => (
+                    <tr key={index}>
+                      <td>{slot.date.toDateString()}</td>
+                      <td>{slot.time}</td>
+                      <td>{slot.duration}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              </div>
             <p className="schedule_inf">Please enter event location :</p>
             <div className="location">
-              <span><img src="img/location.png" alt="Location" width="50px" height="50px" /></span>
-              <input type="text" />
+              <span><img src="../../public/images/location.png" alt="Location" width="50px" height="50px" /></span>
+              <input type="text"
+                  value={location}
+                  onChange={handleLocationChange}
+                />
             </div>
             <p className="schedule_inf">Enter event short description :</p>
             <div className="description">
-              <textarea cols="30" rows="10"></textarea>
+              <textarea cols="30"
+                  rows="10"
+                  value={description}
+                  onChange={handleDescriptionChange}></textarea>
             </div>
             <div className="participants_section">
               <p className="schedule_inf">Add event participant</p>
@@ -220,7 +303,7 @@ function Create() {
                   <span key={index} className="participant_name selected">{participant}</span>
                 ))}
               </div>
-              <div className="participant_list">
+              <div className="participant_list" style={{ maxHeight: '200px', overflow: 'auto' }}>
                 {participants.map((participant, index) => (
                   <div 
                     key={index} 
@@ -233,7 +316,7 @@ function Create() {
               </div>
             </div>
             <div className="submit">
-              <button className="button">Create schedule</button>
+              <button className="button" onClick={handleCreateSchedule}>Create schedule</button>
             </div>
           </div>
         </div>

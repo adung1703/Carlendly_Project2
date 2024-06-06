@@ -15,7 +15,7 @@ const auth = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
-        res.status(400).json({ success: false, message: 'Token không hợp lệ' });
+        res.status(400).json({ success: "false", message: 'Token không hợp lệ' });
     }
 };
 

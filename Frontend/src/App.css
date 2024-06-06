@@ -1004,6 +1004,14 @@ h1{
   font-weight: 500;
   padding: 0 40px 0 20px;
 }
+.event-name input{
+  height: 50px;
+  width: 500px;
+  margin-left: 70px;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 0 40px 0 20px;
+}
 .duration{
   display: flex;
   margin-left: 50px;
@@ -1026,17 +1034,16 @@ h1{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   flex: 1;
   padding: 20px 150px 20px 50px;
 }
 .description textarea{
   margin-left: 50px;
-  width: 600px;
-  height: 200px;
   padding: 20px;
   font-size: 20px;
-  font-weight: 500;
+  max-width: 600px;
+  max-height: 250px;
+  width: 600px;
 }
 .participant{
   margin: 0 50px;
@@ -1044,6 +1051,24 @@ h1{
   background: #fff;
   border-radius: 0 0 10px 10px;
   border: solid 1px #000;
+}
+.slot-list table{
+  width: 600px;
+  margin: 20px 0 0 40px;
+  font-size: 18px;
+  text-align: center;
+}
+.slot-list table tr th,td{
+  height: 50px;
+  border: 1px solid #000;
+  padding: 5px;
+}
+table{
+  border-collapse: collapse;
+}
+.slot-list table a{
+  color: #ff0000;
+  text-decoration: none;
 }
 .label{
   padding: 20px;
@@ -1090,6 +1115,186 @@ h1{
   height: 50px;
 
 }
+.method_2{
+  padding: 20px;
+  background: #f2f2f2;
+  border: none;
+  border-radius: 0 0 10px 10px;
+
+}
+.upload_wrapper{
+  width: 550px;
+  padding: 30px;
+  background: #fff;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+.upload_header{
+  color: #006bff;
+  font-size: 25px;
+  font-weight: 600;
+  text-align: center;
+}
+section .row{
+  background: #e9f0ff;
+  margin-bottom: 10px;
+  list-style: none;
+  padding: 15px 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.progress_area .row .upload_content{
+  width: 100%;
+  margin-left: 15px;
+}
+section .upload_details span{
+  font-size: 15px;
+}
+.progress_area .upload_details{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.progress_area .progress_bar{
+  height: 6px;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 4px;
+  border-radius: 30px;
+}
+.progress_bar .progress{
+  height: 100%;
+  width: 50%;
+  background: #006bff;
+  border-radius: inherit;
+}
+.uploaded_area .row .upload_details{
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.uploaded_area .row .upload_content{
+  display: flex;
+  align-items: center;
+}
+.uploaded_area .upload_details .size{
+  font-size: 12px;
+  color: #404040;
+}
+.uploaded_area{
+  max-height: 150px;
+  overflow-y: scroll;
+}
+.uploaded_area::-webkit-scrollbar{
+  width: 0px;
+}
+.search_wrapper{
+  max-width: 550px;
+  padding: 30px;
+  background: #fff;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+.search_wrapper input{
+  background: #fff;
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.12);
+}
+.search_input input{
+  height: 60px;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0 60px 0 20px;
+  font-size: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+.search_input .auto_com{
+  max-height: 280px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+}
+.search_input.sugg .auto_com{
+  padding: 10px 8px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.search_input.sugg .auto_com li{
+  display: block;
+}
+.auto_com li{
+  list-style: none;
+  padding: 8px 12px;
+  width: 100%;
+  cursor: default;
+  border-radius: 3px;
+  display: none;
+}
+.auto_com li:hover{
+  background: #f2f2f2;
+}
+.auto_com::-webkit-scrollbar{
+  width: 0px;
+}
+.content_footer{
+  position: relative;
+  margin-top: 50px;
+  width: 589px;
+}
+.submit{
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 20px;
+}
+.submit .button{
+  height: 70px;
+  width: 200px;
+}
+.pop_up{
+  width: 600px;
+  height: 200px;
+  background: #fff;
+  border-radius: 6px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  padding: 0 30px 30px;
+  color: #404040;
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%,-50%);
+}
+#Join:checked ~ .pop_up{
+  opacity: 1;
+  visibility: visible;
+}
+.pop_up p{
+  color: #000000;
+  font-size: 35px;
+  font-weight: 700;
+}
+.pop_up input{
+  width: 400px;
+  height: 50px;
+  font-size: 18px;
+  padding: 5px 5px 5px 10px;
+}
+.pop_up .button{
+  margin-left: 20px;
+  width: 70px;
+}
+.open_popup{
+  visibility: visible;
+  top: 60%;
+  transform: translate(-50%,-50%) scale(1);
+}
+
 
 .method_2{
   padding: 20px;
@@ -1260,7 +1465,7 @@ section .upload_details span{
 }
 
 .modal {
-  display: block; /* Hidden by default */
+  display: ; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
@@ -1630,4 +1835,102 @@ body{
 
 .modal .button {
   margin-top: 10px;
+}
+
+
+
+.editmodal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%; /* Could be more or less, depending on screen size */
+}
+
+.edittextarea {
+  width: 100%;
+  height: 100px;
+}
+.savebutton {
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+  background-color: #006bff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+}
+.savebutton:hover{
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  cursor: pointer;
+ }
+
+ .meeting-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+.meeting-card {
+  border: 4px solid #555;
+  margin: 4px;
+  padding: 20px;
+  flex: 0 0 48%;
+  box-sizing: border-box;
+  margin: 1%;
+}
+.editbutton{
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #006bff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+}
+.editbutton:hover{
+ box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+ -webkit-transform: scale(1.1);
+ transform: scale(1.1);
+ cursor: pointer;
+}
+.editmodal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+.edittextarea {
+  width: 100%;
+  height: 100px;
+}
+.savebutton {
+  margin: 10px;
 }

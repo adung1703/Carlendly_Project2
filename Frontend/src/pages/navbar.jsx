@@ -105,7 +105,7 @@ function Navbar() {
       </div>
       <div className="option">
         <div className="My_schedule">
-          <a href="">My scheduled events</a>
+          <a href=""><Link to="/mymeeting">My scheduled events</Link></a>
         </div>
         <div className="about">
           <a href="">About</a>
