@@ -217,6 +217,62 @@ body {
   -o-border-radius: 20px;
   -ms-border-radius: 20px; }
 
+  .editmodal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .edittextarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  
+  .savebutton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+  
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+    max-width: 100px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  
+  .savebutton:hover {
+    background-color: #45a049;
+  }
+  
+  .cancelbutton {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+    max-width: 100px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  
+  .cancelbutton:hover {
+    background-color: #d32f2f;
+  }
+  
+
 .display-flex {
   justify-content: space-between;
   -moz-justify-content: space-between;
@@ -269,6 +325,7 @@ body {
 
 .signup-image {
   margin-top: 45px; }
+
 
 figure {
   margin-bottom: 50px;
@@ -744,6 +801,61 @@ body{
 .container{
   margin-top: 97px;
 }
+.editmodal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.edittextarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.savebutton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  max-width: 100px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.savebutton:hover {
+  background-color: #45a049;
+}
+
+.cancelbutton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  max-width: 100px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.cancelbutton:hover {
+  background-color: #d32f2f;
+}
+
 .background{
   width: 100%;
   height: 100%;
@@ -775,11 +887,14 @@ body{
   1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #000000;
 }
 .create_page{
+  color:rgb(27, 114, 255);
   width: 100%;
   align-items: center;
   display: flex;
   flex-direction: row;
+  margin-bottom: 50px;
 }
+
 .title{
   top: 130px;
   margin: 30px 150px 0 100px;
@@ -789,13 +904,13 @@ body{
   flex: row;
   justify-content: space-between;
   width: calc(100% - 250px);
-  border-bottom: solid 2px #000;
+  border-bottom: solid 2px #709bff;
 }
 h1{
   margin: 0;
 }
 .title span a{
-  color: #000;
+  color: rgb(27, 114, 255);
   text-decoration: none;
   font-size: 35px;
   font-weight: 700;
@@ -813,17 +928,19 @@ h1{
   padding-bottom: 50px;
 }
 .content_left{
+  color: rgb(27, 114, 255);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex: 1;
   border-right: solid 1px #000;
-  padding: 20px 50px 20px 100px;
+  padding: 10px 100px 200px;
 }
 .schedule_inf{
+  color: rgb(27, 114, 255);
   font-size: 25px;
-  margin: 50px 0 20px 0;
+  margin: 0 0 50px 0;
 }
 .calendar{
   margin: 20px 0 20px 70px;
@@ -833,15 +950,18 @@ h1{
   border: solid 1px #000;
 }
 .calendar_heading{
+  background-color: rgb(27, 114, 255);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 25px 30px 10px;
 }
 .month_year{
+  color: #ffffff;
   font-size: 30px;
   font-weight: 600;
 }
+
 .icons{
   display: flex;
 }
@@ -1053,11 +1173,12 @@ h1{
   border: solid 1px #000;
 }
 .slot-list table{
-  width: 600px;
-  margin: 20px 0 0 40px;
+  width: 500px;
+  margin:20px 0 0 60px;
   font-size: 18px;
   text-align: center;
 }
+
 .slot-list table tr th,td{
   height: 50px;
   border: 1px solid #000;
@@ -1464,27 +1585,6 @@ section .upload_details span{
   right: 10px;
 }
 
-.modal {
-  display: ; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 40%; /* Could be more or less, depending on screen size */
-}
-
 .button-container {
   display: flex;
   justify-content: flex-end;
@@ -1539,17 +1639,16 @@ section .upload_details span{
 
 
 .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
   color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+.close:hover{
+  color: #333;
 }
 
 
@@ -1560,32 +1659,7 @@ body{
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
-.joinpage{
-  width: 100%;
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
-}
-.header{
-  display: flex;
-  flex-direction: row;
-  padding: 15px 60px;
-  position: fixed;
-  justify-content: space-between;
-  border-bottom: solid 3px #000;
-  width: 100%;
-  height: fit-content;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  background: #fff;
-}
-.sticky{
-  background: rgba(255, 255, 255, 1);
-}
-.logo{
-  align-self: center;
-}
+
 .create_n_join{
   display: flex;
   flex-direction: row;
@@ -1702,6 +1776,61 @@ body{
   margin-bottom: 44px;
   max-width: 50%;
 }
+.editmodal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.edittextarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.savebutton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  max-width: 100px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.savebutton:hover {
+  background-color: #45a049;
+}
+
+.cancelbutton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  max-width: 100px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.cancelbutton:hover {
+  background-color: #d32f2f;
+}
+
 .background{
   width: 100%;
   height: 100%;
@@ -1807,27 +1936,37 @@ body{
   border-radius: 5px;
 }
 
-.participant_list .participant_option {
+.participant_list{
+  margin-top: 20px;
+}
+.participant_option {
   padding: 5px 10px;
   cursor: pointer;
 }
 
-.participant_list .participant_option.selected {
+.selected_participants .participant_name.selected {
+  display: inline-block;
   background-color: #007bff;
   color: white;
+  margin: 15px;
+  padding: 5px 10px;
   border-radius: 5px;
 }
 
+
 .modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Nền mờ */
+  z-index: 1000; /* Đảm bảo modal nằm trên các thành phần khác */
 }
+
 
 .modal h2 {
   margin-top: 0;
@@ -1839,24 +1978,135 @@ body{
 
 
 
-.editmodal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+h3 {
+  margin-bottom: 20px;
+  padding: 10px;
+  /* border: 2px solid #007bff; Viền màu xanh */
+  color: rgb(27, 114, 255); /* Màu chữ trắng */
+  background-color: #ffffff; /* Nền màu xanh */
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 40%; /* Could be more or less, depending on screen size */
+.file-input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  border: 2px dashed #007bff; /* Viền màu xanh */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #007bff; /* Màu chữ xanh */
+  width: calc(100% - 40px); /* Đảm bảo vùng bao quanh có chiều rộng hợp lý */
+  max-width: 350px; /* Giới hạn chiều rộng tối đa */
+  margin: 30px 20px 30px 20px; /* Căn giữa vùng bao quanh và thêm khoảng cách dưới */
 }
+
+.file-input-wrapper:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.ReactModal__Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 50px;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5); /* Màu nền mờ */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.ReactModal__Content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  outline: none;
+  max-width: 700px; /* Đặt chiều rộng tối đa cho modal */
+  width: 100%; /* Modal chiếm hết chiều rộng màn hình nhưng không vượt quá max-width */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Đổ bóng cho modal */
+}
+
+/* Đảm bảo các hình ảnh và nút trong modal được căn chỉnh đúng */
+.ReactModal__Content img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.ReactModal__Content .button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.ReactModal__Content .button:hover {
+  background-color: #0056b3;
+}
+
+/* //test ************************************************************************/
+
+.add-participants-btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 20px 30px;
+  font-size: 1.6em;
+  border: none;
+  background-color: #fff;
+  color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+}
+
+.add-participants-btn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.show-slots {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.buttonslot{
+  font-size: 1.6em;
+}
+
+.show-slots .buttonslot {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 20px 30px;
+  font-size: 1.6em;
+  border: none;
+  background-color: #fff;
+  color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+
+}
+
+.show-slots .buttonslot:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
 
 .edittextarea {
   width: 100%;
@@ -1917,20 +2167,113 @@ body{
  transform: scale(1.1);
  cursor: pointer;
 }
-.editmodal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+
+
+
+/*  */
+body, html {
+  height: 100%;
+  margin: 0;
 }
-.edittextarea {
+.full {
+  background-position-y: 50px;
+  background-position: center center;
+  background-attachment: fixed;
+  background-image: url("../public/images/join.gif");
+  background-size: cover;
+  /* background-position: center; */
+  background-repeat: no-repeat;
   width: 100%;
-  height: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.savebutton {
-  margin: 10px;
+
+.spinner-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+.joinpage {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 200px;
+  margin-right: 450px;
+  font-size: 16px; /* Cỡ chữ to hơn */
+}
+.joinpage.container.a {
+  max-width: 600px;
+  width: 100%;
+} 
+
+/* Quy tắc chung cho các nhóm phần tử */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 18px; /* Cỡ chữ to hơn */
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px; /* Cỡ chữ to hơn */
+}
+
+/* Nút */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 18px; /* Cỡ chữ to hơn */
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+#notification-bell-container {
+  position: relative;
+  display: inline-block;
+}
+
+#notification-bell {
+  position: relative;
+  cursor: pointer;
+}
+
+#notification-count {
+  position: absolute;
+  top: -10px; /* Điều chỉnh giá trị để định vị nó phía trên chuông */
+  right: -10px; /* Điều chỉnh giá trị để định vị nó phía trên chuông */
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bell-icon {
+  position: relative;
+}
+

@@ -2,6 +2,9 @@ import React, {useEffect, useState } from 'react';
 import Navbar from './navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root'); // Quan trọng cho khả năng truy cập
 
 function Create() {
   const navigate = useNavigate();
@@ -15,6 +18,17 @@ function Create() {
   const [startTime, setStartTime] = useState({ hour: '', minute: '' });
   const [duration, setDuration] = useState({ hour: '', minute: '' });
   const [location, setLocation] = useState('');
+//theem vao
+const [modalIsOpen, setModalIsOpen] = useState(false);
+const [showParticipantList, setShowParticipantList] = useState(false);
+const [showSlots, setShowSlots] = useState(false);
+
+const toggleParticipantList = () => {
+  setShowParticipantList(!showParticipantList);
+};
+
+//
+
   const [description, setDescription] = useState('');
   var username;
 
@@ -84,6 +98,7 @@ function Create() {
         });
         element.classList.add("active");
         setSelectedDay(day);
+        setModalIsOpen(true);  //theem vaof
     }
 }
 
@@ -118,6 +133,7 @@ function Create() {
       duration: `${duration.hour}h${duration.minute}m`
     };
     setSlots([...slots, slot]);
+    setModalIsOpen(false); // Close modal after adding slot
   };  
 
   const handleStartChange = (event) => {
@@ -180,6 +196,14 @@ function Create() {
     setDescription(event.target.value);
   };
 
+  const openParticipantModal = () => {
+    setParticipantModalIsOpen(true);
+  };
+
+  const closeParticipantModal = () => {
+    setParticipantModalIsOpen(false);
+  };
+
   return (
     <div className="create_page">
       <Navbar />
@@ -191,6 +215,7 @@ function Create() {
         <div className="content_left">
           <div className="wrapper">
             <p className="schedule_inf">Please choose a day to schedule your event :</p>
+            
             <div className="calendar">
               <div className="calendar_heading">
                 <p className="month_year">{`${months[currMonth]} ${currYear}`}</p>
@@ -217,70 +242,43 @@ function Create() {
                   {renderCalendar()}
                 </ul>
               </div>
+              
             </div>
-            <button className="button" onClick={handleAddSlot}>Add</button>
-            <p class="schedule_inf">Please choose event starting time :</p>
-            <div class="start_time">
-              <span><img src="../../public/images/clock.webp" alt="" width="50px" height="50px"></img></span>
-              <input type="number" 
-                name="hour"
-                value={startTime.hour}
-                onChange={handleStartChange}></input>
-              <span class="space">:</span>
-              <input type="number" 
-                name="minute"
-                value={startTime.minute}
-                onChange={handleStartChange}></input>
-    
-            </div>
-            <p class="schedule_inf">Please choose event duration :</p>
-            <div class="duration">
-              <span><img src="../../public/images/time.jpg" alt="" width="50px" height="50px"></img></span>
-              <input type="number" 
-                name="hour"
-                value={duration.hour}
-                onChange={handleDurationChange}></input>
-              <span class="duration_element">Hour</span>
-              <input type="number" 
-                name="minute"
-                value={duration.minute}
-                onChange={handleDurationChange}></input>
-              <span class="duration_element">Minute</span>
-            </div>
-            {/* <div className="slots">
-              {slots.map((slot, index) => (
-                <div key={index} className="slot">
-                  <p>Date: {slot.date.toDateString()}</p>
-                  <p>Time: {slot.time}</p>
-                  <p>Duration: {slot.duration}</p>
-                </div>
-              ))}
-            </div> */}
+
+
+                   <div className="show-slots">
+                    <button className="buttonslot" onClick={() => setShowSlots(!showSlots)}>
+                      {showSlots ? 'Hide Scheduled Slots' : 'Show Scheduled Slots'}
+                    </button>
+                  </div> 
+
+                   {showSlots && (
+                    <div className="slot-list">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Duration</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {slots.map((slot, index) => (
+                            <tr key={index}>
+                              <td>{slot.date.toDateString()}</td>
+                              <td>{slot.time}</td>
+                              <td>{slot.duration}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )} 
+
           </div>
         </div>
         <div className="content_right">
           <div className="wrapper">
-            <div class="slot-list">
-              <h1>Scheduled slot :</h1>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Duration</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {slots.map((slot, index) => (
-                    <tr key={index}>
-                      <td>{slot.date.toDateString()}</td>
-                      <td>{slot.time}</td>
-                      <td>{slot.duration}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              </div>
             <p className="schedule_inf">Please enter event location :</p>
             <div className="location">
               <span><img src="../../public/images/location.png" alt="Location" width="50px" height="50px" /></span>
@@ -296,15 +294,22 @@ function Create() {
                   value={description}
                   onChange={handleDescriptionChange}></textarea>
             </div>
+
             <div className="participants_section">
-              <p className="schedule_inf">Add event participant</p>
+              {/* <p className="schedule_inf">Add event participant</p> */}
+              <div className="toggle-participant-list">
+                <button className="add-participants-btn" onClick={toggleParticipantList}>
+                  {showParticipantList ? 'Hide Participants' : 'Add Participants'}
+                </button>
+              </div>
               <div className="selected_participants">
                 {selectedParticipants.map((participant, index) => (
                   <span key={index} className="participant_name selected">{participant}</span>
                 ))}
               </div>
               <div className="participant_list" style={{ maxHeight: '200px', overflow: 'auto' }}>
-                {participants.map((participant, index) => (
+                {/* {participants.map((participant, index) => ( */}
+                {showParticipantList && participants.map((participant, index) => (
                   <div 
                     key={index} 
                     className={`participant_option ${selectedParticipants.includes(participant) ? 'selected' : ''}`} 
@@ -314,6 +319,7 @@ function Create() {
                   </div>
                 ))}
               </div>
+
             </div>
             <div className="submit">
               <button className="button" onClick={handleCreateSchedule}>Create schedule</button>
@@ -321,6 +327,46 @@ function Create() {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Add Slot Modal"
+          className="ReactModal__Content"
+          overlayClassName="ReactModal__Overlay"
+      >
+        <h2>Add Slot</h2>
+        <p className="schedule_inf">Please choose event starting time :</p>
+        <div className="start_time">
+          <span><img src="../../public/images/clock.webp" alt="" width="50px" height="50px" /></span>
+          <input type="number" 
+            name="hour"
+            value={startTime.hour}
+            onChange={handleStartChange}></input>
+          <span className="space">Hour</span>
+          <input type="number" 
+            name="minute"
+            value={startTime.minute}
+            onChange={handleStartChange}></input>
+            <span className="space">Minute</span>
+        </div>
+        <p className="schedule_inf">Please choose event duration :</p>
+        <div className="duration">
+          <span><img src="../../public/images/time.jpg" alt="" width="50px" height="50px" /></span>
+          <input type="number" 
+            name="hour"
+            value={duration.hour}
+            onChange={handleDurationChange}></input>
+          <span className="duration_element">Hour</span>
+          <input type="number" 
+            name="minute"
+            value={duration.minute}
+            onChange={handleDurationChange}></input>
+          <span className="duration_element">Minute</span>
+        </div>
+        <button className="button" onClick={handleAddSlot}>Add Slot</button>
+      </Modal>
+      
+  
     </div>
   );
 }

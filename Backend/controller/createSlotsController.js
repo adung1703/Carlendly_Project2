@@ -28,7 +28,8 @@ exports.getNotification = async (req, res) => {
             hostUser: slot.hostUser,
             description: slot.description,
             currentTime: slot.currentTime,
-            message: slot.hostUser
+            message: slot.hostUser,
+            location: slot.location
         }));
         res.json(notifications);
     } catch (error) {

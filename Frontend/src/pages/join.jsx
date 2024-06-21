@@ -55,6 +55,7 @@ function Join() {
   }
 
   return (
+    <div className="full">
     <div className="joinpage">
       <Navbar />
       <div className="container">
@@ -118,6 +119,7 @@ function Join() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

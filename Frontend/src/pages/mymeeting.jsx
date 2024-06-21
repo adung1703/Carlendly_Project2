@@ -90,7 +90,15 @@ const MeetingTabs = () => {
   return (
     <div className="meeting">
       <Navbar />
+      
       <div className="container">
+      {showModal && (
+            <div className="editmodal">
+              <textarea className="edittextarea" value={currentNote} onChange={(e) => setCurrentNote(e.target.value)} />
+              <button className='savebutton' onClick={handleSaveNote}>Đồng ý</button>
+              <button className='cancelbutton' onClick={() => setShowModal(false)}>Hủy</button>
+            </div>
+          )}
         <div className="tabs">
           <button
             className={`tab ${activeTab === 'host' ? 'active' : ''}`}
@@ -120,14 +128,7 @@ const MeetingTabs = () => {
               <MeetingTabContent meetings={meetings.pastParticipationMeetings} title="Đã diễn ra" onEditNote={handleEditNote} />
             </>
           )}
-          {showModal && (
-            <div className="editmodal">
-              <textarea className="edittextarea" value={currentNote} onChange={(e) => setCurrentNote(e.target.value)} />
-              <button className='savebutton' onClick={handleSaveNote}>Đồng ý</button>
-              <span></span>
-              <button className='savebutton' onClick={() => setShowModal(false)}>Hủy</button>
-            </div>
-          )}
+          
         </div>
       </div>
     </div>
